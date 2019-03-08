@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Virtual route advisor</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    @import url('https://fonts.googleapis.com/css?family=Nunito');
+    
+    html {
+      padding: 0;
+      overflow: hidden;
+    }
+    
+    body {
+      padding: 0;
+      position: relative;
+      background: hsl(0deg, 0%, 90%);
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      margin: 0;
+    }
+    
+    body, input {
+      font-family: 'Nunito', sans-serif;
+    }
+    
+    input:focus {
+      outline: none;
+    }
+    
+    button {
+      cursor: pointer;
+    }
+    
+    .Root {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      overflow-y: auto;
+    }
+    
+    .Root .Root-body {
+      margin: 0 auto;
+      max-width: 1000px;
+      position: relative;
+      width: 100%;
+    }
+    
+    .Header {
+      width: 100%;
+      padding: 10px 10px;
+      box-sizing: border-box;
+      position: sticky;
+      margin-top: 0;
+      background: hsla(0deg, 0%, 90%, 80%);
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+    
+    .Header-title {
+      font-size: 1.2em;
+      text-align: left;
+      margin-bottom: 0;
+      text-shadow: 2px 2px 2px #0003;
+      width: min-content;
+      white-space: nowrap;
+      color: hsl(0deg, 0%, 15%);
+      padding: 1px 14px;
+      border-radius: 6px 6px 0 0;
+      margin-top: 0;
+    }
+    
+    .Header-query {
+      width: 100%;
+      box-sizing: border-box;
+      background: hsl(0deg, 0%, 80%);
+      border-radius: 3px;
+      height: 31px;
+      border: 1px solid #0003;
+      padding: 0 6px;
+      color: hsl(0deg, 0%, 15%);
+      font-size: 17px;
+    }
+    
+    .Articles {
+      list-style-type: none;
+      padding: 0 10px;
+    }
+    
+    .Articles-item {
+      background: hsl(0deg, 0%, 80%);
+      border-radius: 10px;
+      margin-bottom: 10px;
+      padding: 10px 13px;
+      cursor: pointer;
+      opacity: 0.8;
+      transition: 0.4s opacity;
+    }
+    
+    .Articles-item:hover {
+      opacity: 1;
+    }
+    
+    .Articles-itemTitle {
+      margin: 0;
+    }
+    
+    .Articles-itemAuthor {
+      font-size: 14px;
+      font-style: italic;
+    }
+    
+    .Article {
+      display: none;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      padding: 20px;
+      box-sizing: border-box;
+      left: 0;
+      top: 0;
+      background: hsl(0deg, 0%, 90%);
+      z-index: 2;
+      overflow-x: hidden;
+    }
+    
+    .Article .Article-body {
+      max-width: 1000px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    
+    .Article .Article-close {
+      background: no-repeat center/80% url('https://image.flaticon.com/icons/svg/70/70460.svg');
+      width: 20px;
+      height: 20px;
+      position: fixed;
+      right: 22px;
+      top: 10px;
+      border: none;
+      background-color: hsla(0deg, 0%, 90%, 80%);
+      border-radius: 5px;
+    }
+    
+    .Article p {
+      --hue: 200deg;
+    }
+    
+    .Article .Article-entity {
+      float: right;
+      right: 0;
+      top: 20px;
+      height: 100%;
+      width: 25%;
+      min-width: 100px;
+      max-width: 500px;
+      border-left: 1px solid #999;
+      padding-left: 10px;
+      margin-left: 10px;
+      height: max-content;
+      margin-bottom: 10px;
+    }
+    
+    .Article .Article-entityEntry {
+      margin: 0 0 10px 0;
+    }
+    
+    .Article .Article-entityName {
+      line-height: 1.1;
+      font-size: 16px;
+      margin: 0;
+    }
+    
+    .Article .Article-entityDescription {
+      margin: 0;
+      font-size: 14px;
+    }
+    
+    .Article .Article-entityCategories {
+      list-style-type: none;
+      padding: 0;
+      font-style: italic;
+      margin: 0;
+      font-size: 13px;
+    }
+    
+    .Article .Article-entityCategory {
+      display: inline-block;
+      margin-right: 6px;
+    }
+    
+    .Entity {
+      background: hsl(var(--hue), 50%, 75%);
+      padding: 0 4px;
+      border-radius: 4px;
+    }
+    
+    .Entity.active {
+      --hue: 250deg;
+    }
+    
+    .visible {
+      display: initial;
+    }
+    
+  </style>
+</head>
+
+<body>
+  <main class="Root">
+    <div class="Root-body">
+      <form class="Header" rv-on-submit="fetchArticles">
+        <h1 class="Header-title">News intelligence engine</h1>
+        <input placeholder="Search news articles..." autofocus type="text" class="Header-query" rv-value="query"/>
+      </form>
+      <ul class="Articles">
+        <li rv-each-item="articles" class="Articles-item" rv-on-click="showArticle">
+          <h4 class="Articles-itemTitle">{ item.title }</h4>
+          <span class="Articles-itemAuthor">{ item.author }</span>
+        </li>
+      </ul>
+    </div>
+  </main>
+  <article class="Article" rv-class-visible="article.visible">
+    <div class="Article-body">
+      <button class="Article-close" rv-on-click="closeArticle" title="Close"></button>
+      <h2 class="Article-title">{ article.title }</h4>
+      <span class="Article-author">{ article.author }</span>
+      <aside class="Article-entity">
+        <figure rv-each-entry="entity" class="Article-entityEntry">
+          <h3 class="Article-entityName">{entry.name}</h3>
+          <p class="Article-entityDescription">{entry.description}</p>
+          <ul class="Article-entityCategories">
+            <li class="Article-entityCategory" rv-each-category="entry.categories">{category}</li>
+          </ul>
+        </figure>
+      </aside>
+      <p rv-each-line="article.content">
+        <article-span rv-each-span="line" data="span"></article-span>
+      </p>
+    </div>
+  </article>
+  
+  <script src="app.js"></script>
+</body>
+
+</html>

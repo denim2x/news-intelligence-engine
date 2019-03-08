@@ -1,0 +1,26 @@
+{
+  "name": "news-intelligence-engine",
+  "version": "1.0.0",
+  "author": "denim2x <denim2x@cyberdude.com>",
+  "license": "MIT",
+  "repository": "github:denim2x/news-intelligence-engine",
+  "devDependencies": {
+    "browserify": "^16.2.3"
+  },
+  "dependencies": {
+    "bean": "^1.0.15",
+    "express": "^4.16.4",
+    "google-palette": "^1.1.0",
+    "hyperscript-string": "^2.1.0",
+    "linqjs": "^1.0.1",
+    "request": "^2.88.0",
+    "rivets": "^0.9.6",
+    "strformat": "0.0.7",
+    "superagent": "4.1.0",
+    "type-of": "^2.0.1"
+  },
+  "scripts": {
+    "prestart": "browserify src/app.js -o public/app.js",
+    "start": "node index.js"
+  }
+}

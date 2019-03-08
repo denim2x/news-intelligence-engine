@@ -1,0 +1,4 @@
+node_modules/
+public/app.js
+*.log
+.c9
