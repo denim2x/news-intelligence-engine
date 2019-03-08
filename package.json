@@ -1,5 +1,6 @@
 {
   "name": "news-intelligence-engine",
+  "description": "Web app for browsing entities found within news articles",
   "version": "1.0.0",
   "author": "denim2x <denim2x@cyberdude.com>",
   "license": "MIT",
