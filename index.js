@@ -14,7 +14,7 @@ let dandelion_api = request
   .type('json')
   .query({ 
     token: process.env.DANDELION_TOKEN, 
-    min_confidence: '0.21'
+    min_confidence: '0.28'
   });
   
 let graph_api = request
