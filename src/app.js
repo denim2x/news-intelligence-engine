@@ -1,7 +1,6 @@
 'use strict';
 
 const type = require('type-of');
-const palette = require('google-palette');
 const request = require('superagent');
 require('linqjs');
 const rivets = require('rivets');
