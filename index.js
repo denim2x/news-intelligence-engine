@@ -51,5 +51,5 @@ app.get('/entity/:name', (req, res) => {
   pipe(graph_api.query({ query: name }), res);
 });
 
-app.listen(process.env.PORT);
+app.listen(process.env.PORT || 8080);
 
