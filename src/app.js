@@ -82,7 +82,7 @@ const state = {
         state.entity = data.details;
         mark(e.target);
       });
-    }, 400);
+    }, 700);
   },
   cancelEntity(e, data) {
     clearTimeout(entity_timer);
